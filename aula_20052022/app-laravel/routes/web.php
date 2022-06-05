@@ -15,11 +15,24 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventoController;
 
 Route::get('/', [EventoController::class, 'index']);
-Route::get('/eventos/criar', [EventoController::class, 'criar']);
+Route::get('/eventos/criar', [EventoController::class, 'criar'])->middleware('auth');//middleware('auth') para permitir somente para os usuarios logados criarem eventos
+Route::get('/eventos/{id}', [EventoController::class, 'mostrar']);//show
 
 //rota de post
-Route::post('/eventos', [EventoController::class, 'store']);
+Route::post('/eventos', [EventoController::class, 'store']);//store envia dodos pro banco
+
+Route::delete('/eventos/{id}', [EventoController::class, 'destroy'])->middleware('auth');
+
+Route::get('/eventos/editar/{id}', [EventoController::class, 'editar'])->middleware('auth');
+Route::put('/eventos/update/{id}', [EventoController::class, 'update'])->middleware('auth');;
+
 Route::get('/contato', [EventoController::class, 'contato']);
+
+Route::get('/dashboard',[EventoController::class, 'dashboard'])->middleware('auth');
+
+Route::get('/eventos/join/{id}', [EventoController::class, 'joinEvento'])->middleware('auth');
+
+Route::delete('/eventos/leave/{id}', [EventoController::class, 'leaveEvento'])->middleware('auth');
 
 //Route::get('/produtos', [EventoController::class, 'produtos']);
 
@@ -36,3 +49,4 @@ Route::get('/contato', [EventoController::class, 'contato']);
 // Route::get('/produtos_teste/{id?}', function ($id=null) {
 //     return view('produto', ['id'=>$id]);
 // });
+
